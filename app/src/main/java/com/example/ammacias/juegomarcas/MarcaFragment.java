@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ammacias.juegomarcas.Clase.Marca;
+import com.example.ammacias.juegomarcas.Clase.Result;
 import com.example.ammacias.juegomarcas.Interfaz.IMarca;
 
 import java.util.ArrayList;
@@ -25,9 +26,11 @@ import java.util.List;
 public class MarcaFragment extends Fragment {
 
     // TODO: Customize parameters
-    private int mColumnCount = 2;
+    private int mColumnCount = 4;
 
     private IMarca mListener;
+
+    Result result;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -47,6 +50,10 @@ public class MarcaFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_marca_list, container, false);
 
+        MainActivity ma = (MainActivity) getActivity();
+        result=ma.getResult();
+
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -56,9 +63,18 @@ public class MarcaFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            List<Marca> listadoMarcas = new ArrayList<>();
 
-            recyclerView.setAdapter(new MyMarcaRecyclerViewAdapter(listadoMarcas, mListener));
+           /*for (Marca p: result.getMarca()) {
+                System.out.println("Todo: "+p.getNombre());
+            }*/
+
+            List<Marca> a = new ArrayList<>();
+            a.add(new Marca("audi.jpg"));
+            a.add(new Marca("volvo.jpg"));
+            a.add(new Marca("nissan.jpg"));
+            a.add(new Marca("maserati.jpg"));
+            a.add(new Marca("honda.jpg"));
+            recyclerView.setAdapter(new MyMarcaRecyclerViewAdapter(getActivity(),a, mListener));
         }
         return view;
     }

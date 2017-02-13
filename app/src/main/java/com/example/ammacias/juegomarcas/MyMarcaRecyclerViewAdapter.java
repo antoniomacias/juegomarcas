@@ -1,5 +1,6 @@
 package com.example.ammacias.juegomarcas;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.ammacias.juegomarcas.Clase.Marca;
 import com.example.ammacias.juegomarcas.Interfaz.IMarca;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -19,10 +21,12 @@ import java.util.List;
  */
 public class MyMarcaRecyclerViewAdapter extends RecyclerView.Adapter<MyMarcaRecyclerViewAdapter.ViewHolder> {
 
+    private Context ctx;
     private final List<Marca> mValues;
     private final IMarca mListener;
 
-    public MyMarcaRecyclerViewAdapter(List<Marca> items, IMarca listener) {
+    public MyMarcaRecyclerViewAdapter(Context context, List<Marca> items, IMarca listener) {
+        ctx = context;
         mValues = items;
         mListener = listener;
     }
@@ -37,7 +41,12 @@ public class MyMarcaRecyclerViewAdapter extends RecyclerView.Adapter<MyMarcaRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.foto.setImageResource(mValues.get(position).getFoto());
+        holder.nombre.setText(mValues.get(position).getNombre());
+        Picasso.with(ctx)
+                .load(("http://juegomarcas.esy.es/images/ncage.jpg"/*+mValues.get(position).getFoto()*/))
+                .resize(250, 250)
+                .centerCrop()
+                .into(holder.foto);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,12 +66,14 @@ public class MyMarcaRecyclerViewAdapter extends RecyclerView.Adapter<MyMarcaRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
+        public final TextView nombre;
         public final ImageView foto;
         public Marca mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            nombre = (TextView) view.findViewById(R.id.nombre);
             foto = (ImageView) view.findViewById(R.id.foto);
         }
 

@@ -24,7 +24,7 @@ public class Marca {
     private Integer nivel;
     @SerializedName("foto")
     @Expose
-    private int foto;
+    private String foto;
     @SerializedName("acertado")
     @Expose
     private Boolean acertado;
@@ -53,11 +53,11 @@ public class Marca {
         this.nivel = nivel;
     }
 
-    public int getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(int foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 
@@ -69,4 +69,18 @@ public class Marca {
         this.acertado = acertado;
     }
 
+    @Override
+    public String toString() {
+        return "Marca{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", nivel=" + nivel +
+                ", foto='" + foto + '\'' +
+                ", acertado=" + acertado +
+                '}';
+    }
+
+    public Marca(String foto) {
+        this.foto = foto;
+    }
 }
