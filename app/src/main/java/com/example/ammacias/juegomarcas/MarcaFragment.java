@@ -9,13 +9,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ammacias.juegomarcas.Clase.Marca;
 import com.example.ammacias.juegomarcas.Clase.Result;
+import com.example.ammacias.juegomarcas.Interfaz.IHostinger;
 import com.example.ammacias.juegomarcas.Interfaz.IMarca;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * A fragment representing a list of Items.
@@ -30,7 +38,7 @@ public class MarcaFragment extends Fragment {
 
     private IMarca mListener;
 
-    Result result;
+    RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -50,32 +58,18 @@ public class MarcaFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_marca_list, container, false);
 
-        MainActivity ma = (MainActivity) getActivity();
-        result=ma.getResult();
-
-
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
-           /*for (Marca p: result.getMarca()) {
-                System.out.println("Todo: "+p.getNombre());
-            }*/
-
-            List<Marca> a = new ArrayList<>();
-            a.add(new Marca("audi.jpg"));
-            a.add(new Marca("volvo.jpg"));
-            a.add(new Marca("nissan.jpg"));
-            a.add(new Marca("maserati.jpg"));
-            a.add(new Marca("honda.jpg"));
-            recyclerView.setAdapter(new MyMarcaRecyclerViewAdapter(getActivity(),a, mListener));
+            getDatos();
         }
+
         return view;
     }
 
@@ -97,4 +91,41 @@ public class MarcaFragment extends Fragment {
         mListener = null;
     }
 
+
+    void getDatos(){
+
+        //RETROFIT
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(IHostinger.ENDPOINT)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        IHostinger service = retrofit.create(IHostinger.class);
+
+        Call<Result> autocompleteList = service.getDatos();
+
+        autocompleteList.enqueue(new Callback<Result>() {
+
+            @Override
+            public void onResponse(Response<Result> response, Retrofit retrofit) {
+
+                if (response.isSuccess()) {
+                    Result r = response.body();
+
+                    recyclerView.setAdapter(new MyMarcaRecyclerViewAdapter(getActivity(),r.getMarca(), mListener));
+
+                } else {
+                    System.out.println("Error: " + response.code());
+                    Toast.makeText(getActivity(), "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println("Throw: " + t.getMessage());
+                Toast.makeText(getActivity(), "Throw: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
 }

@@ -3,12 +3,15 @@ package com.example.ammacias.juegomarcas.Clase;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.util.List;
 
 /**
  * Created by ammacias on 13/02/2017.
  */
 
+@Parcel
 public class Result {
 
     @SerializedName("marca")

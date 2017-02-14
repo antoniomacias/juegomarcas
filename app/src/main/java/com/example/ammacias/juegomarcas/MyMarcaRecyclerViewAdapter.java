@@ -41,18 +41,14 @@ public class MyMarcaRecyclerViewAdapter extends RecyclerView.Adapter<MyMarcaRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.nombre.setText(mValues.get(position).getNombre());
         Picasso.with(ctx)
-                .load(("http://juegomarcas.esy.es/images/ncage.jpg"/*+mValues.get(position).getFoto()*/))
-                .resize(250, 250)
-                .centerCrop()
+                .load(("http://juegomarcas.esy.es/images/"+mValues.get(position).getFoto()))
+                .resize(250, 200)
                 .into(holder.foto);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onClickMarca(holder.mItem);
                 }
             }
@@ -66,14 +62,12 @@ public class MyMarcaRecyclerViewAdapter extends RecyclerView.Adapter<MyMarcaRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView nombre;
         public final ImageView foto;
         public Marca mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            nombre = (TextView) view.findViewById(R.id.nombre);
             foto = (ImageView) view.findViewById(R.id.foto);
         }
 
