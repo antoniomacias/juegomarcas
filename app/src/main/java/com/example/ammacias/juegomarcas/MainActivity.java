@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements IMarca{
     @Override
     public void onClickMarca(Marca m) {
         Intent intent = new Intent(this, DetalleActivity.class);
-        intent.putExtra("marca", Parcels.wrap(m));
+
+        intent.putExtra("marcaID", m.getId());
         startActivity(intent);
     }
 }

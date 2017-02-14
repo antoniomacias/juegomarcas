@@ -13,7 +13,7 @@ public class DatabaseConnection {
     private static DaoSession daoSession;
 
     public static DaoSession getConnection(Context ctx) {
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(ctx,"MarcaDB", null);
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(ctx,"marca-db", null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
@@ -21,14 +21,8 @@ public class DatabaseConnection {
         return daoSession;
     }
 
-    public static MarcaDBDao getAirlineDao (Context ctx) {
+    public static MarcaDBDao getMarcaDBDao (Context ctx) {
         DaoSession daoSession = DatabaseConnection.getConnection(ctx);
         return daoSession.getMarcaDBDao();
     }
-
-    public static MarcaDBDao getVueloDao (Context ctx) {
-        DaoSession daoSession = DatabaseConnection.getConnection(ctx);
-        return daoSession.getMarcaDBDao();
-    }
-
 }

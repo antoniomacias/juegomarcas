@@ -15,6 +15,9 @@ import com.example.ammacias.juegomarcas.Clase.Marca;
 import com.example.ammacias.juegomarcas.Clase.Result;
 import com.example.ammacias.juegomarcas.Interfaz.IHostinger;
 import com.example.ammacias.juegomarcas.Interfaz.IMarca;
+import com.example.ammacias.juegomarcas.localdb.DatabaseConnection;
+import com.example.ammacias.juegomarcas.localdb.MarcaDB;
+import com.example.ammacias.juegomarcas.localdb.MarcaDBDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,9 +115,33 @@ public class MarcaFragment extends Fragment {
                 if (response.isSuccess()) {
                     Result r = response.body();
 
+                    MarcaDBDao marcaDBDao = DatabaseConnection.getMarcaDBDao(getActivity());
                     for (Marca m: r.getMarca()) {
-                        System.out.println("Nombre: "+m.getNombre());
+                        //Si NO existe
+                        if (marcaDBDao.load(m.getId())!=null){
+                            System.out.println("YEPA: "+marcaDBDao.load(m.getId()));
+
+                            MarcaDB nuevaMarca = new MarcaDB();
+                            nuevaMarca.setId(m.getId());
+                            nuevaMarca.setNombre(m.getNombre());
+                            nuevaMarca.setNivel(m.getNivel());
+                            nuevaMarca.setFoto(m.getFoto());
+                            nuevaMarca.setAcertado(m.getAcertado());
+
+                            //marcaDBDao.insert(nuevaMarca);
+                        }else{
+                            //TODO: Si hay algo diferente en alguna marca del JSON, hago update en local
+                            /*for (MarcaDB a: marcaDBDao.loadAll()) {
+
+                            }*/
+                        }
+
+
+                    // SELECT * FROM marca WHERE
+                    // MarcaDB marcaActual = marcadbDao.load(id);
+
                     }
+
                     recyclerView.setAdapter(new MyMarcaRecyclerViewAdapter(getActivity(),r.getMarca(), mListener));
 
                 } else {
@@ -128,7 +155,6 @@ public class MarcaFragment extends Fragment {
                 System.out.println("Throw: " + t.getMessage());
                 Toast.makeText(getActivity(), "Throw: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 }
