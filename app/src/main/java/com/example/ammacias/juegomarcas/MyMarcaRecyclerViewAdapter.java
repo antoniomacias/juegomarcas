@@ -41,6 +41,7 @@ public class MyMarcaRecyclerViewAdapter extends RecyclerView.Adapter<MyMarcaRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
+        System.out.println("http://juegomarcas.esy.es/images/"+mValues.get(position).getFoto());
         Picasso.with(ctx)
                 .load(("http://juegomarcas.esy.es/images/"+mValues.get(position).getFoto()))
                 .resize(250, 200)
@@ -63,11 +64,13 @@ public class MyMarcaRecyclerViewAdapter extends RecyclerView.Adapter<MyMarcaRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final ImageView foto;
+        public final TextView nombre;
         public Marca mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            nombre = (TextView) view.findViewById(R.id.nombre);
             foto = (ImageView) view.findViewById(R.id.foto);
         }
 

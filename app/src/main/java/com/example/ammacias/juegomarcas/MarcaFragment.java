@@ -112,6 +112,9 @@ public class MarcaFragment extends Fragment {
                 if (response.isSuccess()) {
                     Result r = response.body();
 
+                    for (Marca m: r.getMarca()) {
+                        System.out.println("Nombre: "+m.getNombre());
+                    }
                     recyclerView.setAdapter(new MyMarcaRecyclerViewAdapter(getActivity(),r.getMarca(), mListener));
 
                 } else {
