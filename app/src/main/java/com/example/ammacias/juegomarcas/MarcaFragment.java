@@ -118,7 +118,7 @@ public class MarcaFragment extends Fragment {
                     MarcaDBDao marcaDBDao = DatabaseConnection.getMarcaDBDao(getActivity());
                     for (Marca m: r.getMarca()) {
                         //Si NO existe
-                        if (marcaDBDao.load(m.getId())!=null){
+                        if (marcaDBDao.load(m.getId())==null){
                             System.out.println("YEPA: "+marcaDBDao.load(m.getId()));
 
                             MarcaDB nuevaMarca = new MarcaDB();
@@ -128,7 +128,7 @@ public class MarcaFragment extends Fragment {
                             nuevaMarca.setFoto(m.getFoto());
                             nuevaMarca.setAcertado(m.getAcertado());
 
-                            //marcaDBDao.insert(nuevaMarca);
+                            marcaDBDao.insert(nuevaMarca);
                         }else{
                             //TODO: Si hay algo diferente en alguna marca del JSON, hago update en local
                             /*for (MarcaDB a: marcaDBDao.loadAll()) {
@@ -142,7 +142,7 @@ public class MarcaFragment extends Fragment {
 
                     }
 
-                    recyclerView.setAdapter(new MyMarcaRecyclerViewAdapter(getActivity(),r.getMarca(), mListener));
+                    recyclerView.setAdapter(new MyMarcaRecyclerViewAdapter(getActivity(),marcaDBDao.loadAll(), mListener));
 
                 } else {
                     System.out.println("Error: " + response.code());

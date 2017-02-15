@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.ammacias.juegomarcas.Clase.Marca;
 import com.example.ammacias.juegomarcas.Interfaz.IMarca;
+import com.example.ammacias.juegomarcas.localdb.MarcaDB;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,10 +23,10 @@ import java.util.List;
 public class MyMarcaRecyclerViewAdapter extends RecyclerView.Adapter<MyMarcaRecyclerViewAdapter.ViewHolder> {
 
     private Context ctx;
-    private final List<Marca> mValues;
+    private final List<MarcaDB> mValues;
     private final IMarca mListener;
 
-    public MyMarcaRecyclerViewAdapter(Context context, List<Marca> items, IMarca listener) {
+    public MyMarcaRecyclerViewAdapter(Context context, List<MarcaDB> items, IMarca listener) {
         ctx = context;
         mValues = items;
         mListener = listener;
@@ -65,7 +66,7 @@ public class MyMarcaRecyclerViewAdapter extends RecyclerView.Adapter<MyMarcaRecy
         public final View mView;
         public final ImageView foto;
         public final TextView nombre;
-        public Marca mItem;
+        public MarcaDB mItem;
 
         public ViewHolder(View view) {
             super(view);

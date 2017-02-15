@@ -11,6 +11,7 @@ import com.example.ammacias.juegomarcas.Clase.Marca;
 import com.example.ammacias.juegomarcas.Clase.Result;
 import com.example.ammacias.juegomarcas.Interfaz.IHostinger;
 import com.example.ammacias.juegomarcas.Interfaz.IMarca;
+import com.example.ammacias.juegomarcas.localdb.MarcaDB;
 
 import org.parceler.Parcels;
 
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements IMarca{
 
 
     @Override
-    public void onClickMarca(Marca m) {
+    public void onClickMarca(MarcaDB m) {
         Intent intent = new Intent(this, DetalleActivity.class);
 
         intent.putExtra("marcaID", m.getId());

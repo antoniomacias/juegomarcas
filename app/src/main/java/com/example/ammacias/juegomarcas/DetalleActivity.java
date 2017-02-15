@@ -38,10 +38,10 @@ public class DetalleActivity extends AppCompatActivity {
         editText = (EditText)findViewById(R.id.nombre);
         marcaDBDao = DatabaseConnection.getMarcaDBDao(this);
 
+        final MarcaDB marcaDB = marcaDBDao.load(getIntent().getLongExtra("marcaID",0));
+
         Picasso.with(this)
-                .load(("http://juegomarcas.esy.es/images/"+marcaDBDao
-                        .load(getIntent().getLongExtra("marcaID",0))
-                        .getFoto()))
+                .load(("http://juegomarcas.esy.es/images/"+marcaDB.getFoto()))
                 .resize(250, 200)
                 .into(i);
 
@@ -58,9 +58,11 @@ public class DetalleActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editText.getText().toString().equalsIgnoreCase(marcaDBDao.load(getIntent().getLongExtra("marcaID",0)).getNombre())){
+                if (editText.getText().toString().equalsIgnoreCase(marcaDB.getNombre())){
                     Toast.makeText(DetalleActivity.this, "CORRECTO", Toast.LENGTH_SHORT).show();
                     //TODO: Machaco el booleano
+                    marcaDB.setAcertado(true);
+                    marcaDBDao.update(marcaDB);
                 }
             }
         });
